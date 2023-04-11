@@ -43,15 +43,13 @@ with mp_face_detection.FaceDetection(
                 elif arr[2][1] - arr[0][1] > arr[3][1] - arr[2][1]:
                     view += "down"
 
-                # 얼굴 위치 좌우 판별
+                # 얼굴 위치 판별 / 코의 위치를 기준으로 판별
                 if arr[2][0] < 0.4:
                     loc = "left "
                 elif arr[2][0] > 0.6:
                     loc = "right "
                 else:
                     loc = "center "
-
-                # 얼굴 위치 상하 판별
                 if arr[2][1] < 0.4:
                     loc += "up"
                 elif arr[2][1] > 0.6:
