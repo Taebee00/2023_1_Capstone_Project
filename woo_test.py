@@ -23,9 +23,10 @@ def AngleToRadian(angle):
 
 
 def setPWMwithAngle(theta0, theta1, theta2):
-    pwm.set_pwm(0, 0, AngleToRadian(theta0))
-    pwm.set_pwm(4, 0, AngleToRadian(theta1))
     pwm.set_pwm(8, 0, AngleToRadian(theta2))
+    pwm.set_pwm(4, 0, AngleToRadian(theta1))
+    pwm.set_pwm(0, 0, AngleToRadian(theta0))
+
 
 
 # set default angle
@@ -89,17 +90,16 @@ while True:
     theta_1+=7
     theta_2+=21
     theta_3=abs(theta_2-theta_1)
-    pwm.set_pwm(12, 0, AngleToRadian(theta_3))
+    # pwm.set_pwm(12, 0, AngleToRadian(theta_3))
     # Start at the Deafult and then move Each Motors for 3steps with 0.07seconds
     for i in range(3):
         target_angle=[theta_0, theta_1, theta_2]
         angle_diff=target_angle[i]-current_angles[i]
-        steps=abs(int(angle_diff/5))
+        steps=abs(int(angle_diff/3))
         direction = 1 if angle_diff>0 else -1
         for j in range(steps):
             current_angles[i] +=3 * direction
             setPWMwithAngle(current_angles[0], current_angles[1], current_angles[2])
-            time.sleep(0.07)
-
+            time.sleep(0.05)
 
 # 

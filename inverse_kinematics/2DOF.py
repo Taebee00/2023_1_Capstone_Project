@@ -23,9 +23,9 @@ def AngleToRadian(angle):
 
 
 def setPWMwithAngle(theta0, theta1, theta2):
-    pwm.set_pwm(4, 0, AngleToRadian(theta0))
-    pwm.set_pwm(8, 0, AngleToRadian(theta1))
-    pwm.set_pwm(12, 0, AngleToRadian(theta2))
+    pwm.set_pwm(0, 0, AngleToRadian(theta0))
+    pwm.set_pwm(4, 0, AngleToRadian(theta1))
+    pwm.set_pwm(8, 0, AngleToRadian(theta2))
 
 
 # set default angle
@@ -88,7 +88,16 @@ while True:
 
     # Move servos on each channel
     setPWMwithAngle(theta_0, theta_1 + 7, theta_2 + 21)
+    # if (theta_1 < 90):
+    #     theta_3 = abs(theta_2 - theta_1) + 90 + 10
+    # else :
+    #     theta_3 = 90 - abs(theta_1 - theta_2) + 5
+    theta_3 = 90 - theta_1 + theta_2 + 13
+    print(theta_3)
+    pwm.set_pwm(12, 0, AngleToRadian(theta_3))
+    
 
+    
     print(f"theta_0 : {theta_0}")
     print(f"theta_1 : {theta_1}")
     print(f"theta_2 : {theta_2}")
