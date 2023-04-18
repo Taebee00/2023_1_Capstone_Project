@@ -3,6 +3,7 @@
 
 import Adafruit_PCA9685
 import time
+import math
 
 # Initialise the PCA9685 using desired address and/or bus:
 pwm = Adafruit_PCA9685.PCA9685(address = 0x40, busnum = 1)
@@ -26,8 +27,8 @@ while True:
 	# Move servo on each channel
 	print('Moving servo on channel: ', int(a))
 	print('Moving servo on channel: ', int(b))
-	pwm.set_pwm(int(a), 0, 150 + int(int(angle) * 2.8))
-	pwm.set_pwm(int(b), 0, 150 + int(int(angle_2) * 2.8))
+	pwm.set_pwm(int(a), 0, int(servo_min + math.radians(int(angle)) * (servo_max - servo_min) / math.pi))
+	pwm.set_pwm(int(b), 0, int(servo_min + math.radians(int(angle)) * (servo_max - servo_min) / math.pi))
     #for i in range(servo_num):
 	#	if a[i]=='1':
 	#		print('Moving servo on channel: ', i)
