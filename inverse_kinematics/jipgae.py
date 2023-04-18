@@ -101,7 +101,7 @@ while True:
 
     # get theta with Inverse Kinematics
     theta_0, theta_1, theta_2 = CalcaulteTheta(x, y, z)
-    theta_3 = 90 - theta_1 + theta_2 + 13
+    theta_3 = 90 - theta_1 + theta_2 + 10
     pwm.set_pwm(12, 0, AngleToRadian(theta_3))
     # Move servos on each channel
     setPWMwithAngle(theta_0, theta_1 + 7, theta_2 + 21)
