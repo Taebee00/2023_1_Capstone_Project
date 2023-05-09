@@ -3,7 +3,6 @@ import Adafruit_PCA9685
 import time
 import decimal
 
-
 # Initialise the PCA9685 using desired address and/or bus:
 pwm = Adafruit_PCA9685.PCA9685(address=0x40, busnum=1)
 
@@ -17,40 +16,24 @@ pwm.set_pwm_freq(60)
 
 # Caluate the angle to radian
 
-
 def AngleToRadian(angle):
     return int(servo_min + math.radians(angle) * (servo_max - servo_min) / math.pi)
 
 
 def setPWMwithAngle(theta0, theta1, theta2):
+    pwm.set_pwm(12, 0, AngleToRadian(90 - theta1-7 + theta2-21 + 20))
     pwm.set_pwm(4, 0, AngleToRadian(theta1))
     pwm.set_pwm(0, 0, AngleToRadian(theta0))
     pwm.set_pwm(8, 0, AngleToRadian(theta2))
-
+    
 
 # set default angle
 def setDefaultMode():
-    setPWMwithAngle(0, 110, 170)
-    current_angles = [0, 110, 170]
-
-    theta_3 = 90 - 110 + 170 + 13
-    pwm.set_pwm(12, 0, AngleToRadian(theta_3))
-
-    for i in range(3):
-        target_angle=[theta_0, theta_1, theta_2]
-        angle_diff=target_angle[i]-current_angles[i]
-        steps=abs(int(angle_diff/3))
-        direction = 1 if angle_diff>0 else -1
-        for j in range(steps):
-            current_angles[i] +=3 * direction
-            setPWMwithAngle(current_angles[0], current_angles[1], current_angles[2])
-            time.sleep(0.05)
-
-
+    theta_3 = 90 - 110 + 150 + 13
+    setPWMwithAngle(0, 117, 171)
 
 def sqrtXYZ(x=0, y=0, z=0):
     return math.sqrt(x**2 + y**2 + z**2)
-
 
 def CalcaulteTheta(x, y, z):
     # Flag for Handling when the coordinates in distance from origin
@@ -88,8 +71,8 @@ l_1, l_2 = 20, 20
 # O_x, O_y, O_z = 7.5, 7.5, 5
 # O_x, O_y, O_z = 8, 5, 5
 O_x, O_y, O_z = 0, 0, 0
-
-
+# setDefaultMode()
+current_angles = [0,110,170] # default
 
 while True:
     # ans = input("Default?")
@@ -101,16 +84,22 @@ while True:
 
     # get theta with Inverse Kinematics
     theta_0, theta_1, theta_2 = CalcaulteTheta(x, y, z)
-    theta_3 = 90 - theta_1 + theta_2 + 13
-    pwm.set_pwm(12, 0, AngleToRadian(theta_3))
-    # Move servos on each channel
-    setPWMwithAngle(theta_0, theta_1 + 7, theta_2 + 21)
 
     print(f"theta_0 : {theta_0}")
     print(f"theta_1 : {theta_1}")
     print(f"theta_2 : {theta_2}")
-    print(f"theta_3 : {theta_3}")
+    print(f"theta_3 : {90 - theta_1 + theta_2 + 13}")
 
+    for i in range(3):
+        target_angle=[theta_0, theta_1+7, theta_2+21]
+        angle_diff=target_angle[i]-current_angles[i]
+        steps=abs(int(angle_diff/3))
+        direction = 1 if angle_diff>0 else -1
+        for j in range(steps):
+            current_angles[i] +=3 * direction
+            setPWMwithAngle(current_angles[0], current_angles[1], current_angles[2])
+            time.sleep(0.2)
+    
     ans = input("Gripper haslsee? : ")
     if ans == 'Y' or ans =='y':
         griper_angle = int(input('Enter the gripper angle (0 ~ 90) : ')) + 90
