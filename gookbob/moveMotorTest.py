@@ -1,5 +1,6 @@
 from controlMotor import *
 
+coord = [[]]
 if __name__ == '__main__':
     cm = ControlMotor()
 
