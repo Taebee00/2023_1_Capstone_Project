@@ -3,7 +3,6 @@ import math
 # Configure min and max servo pulse lengths
 SERVO_MIN = 150  # min. pulse length
 SERVO_MAX = 600  # max. pulse length
-SERVO_OFFSET = 50
 
 # arm1 & arm2 length
 ARM1_LENGTH = 20

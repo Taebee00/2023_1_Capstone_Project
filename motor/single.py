@@ -26,6 +26,7 @@ while True:
 	print('Moving servo on channel: ', int(a))
 	# pwm.set_pwm(int(a), 0, 150 + int(int(angle) * 2.8))
 	pwm.set_pwm(int(a), 0, int(servo_min + math.radians(int(angle)) * (servo_max - servo_min) / math.pi))
+
 	#for i in range(servo_num):
 	#	if a[i]=='1':
 	#		print('Moving servo on channel: ', i)
