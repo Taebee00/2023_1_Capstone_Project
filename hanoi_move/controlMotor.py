@@ -27,6 +27,7 @@ class ControlMotor:
                 self.current_angles[j] = diff[j][i]
                 self.setPWMwithAngle(self.current_angles, j)
                 time.sleep(.02)
+        time.sleep(0.2)
         for i in range(STEP):
             self.current_angles[0] = diff[0][i]
             self.setPWMwithAngle(self.current_angles, 0)
@@ -37,6 +38,7 @@ class ControlMotor:
 
 
     def setPWMwithAngle(self, thetas, num):
+
         if num == 0: self.pwm.set_pwm(0, 0, AngleToRadian(thetas[0]))
         elif num == 1: self.pwm.set_pwm(4, 0, AngleToRadian(thetas[1]))
         elif num == 2 : self.pwm.set_pwm(8, 0, AngleToRadian(thetas[2]))
@@ -45,11 +47,17 @@ class ControlMotor:
 
     def moveArmSlow(self):
         diff = []
-        for i in range(3):
+        diff.append(np.linspace(self.current_angles[0], self.target_angles[0], STEP + 10))
+        for i in range(1, 3):
             diff.append(np.linspace(self.current_angles[i], self.target_angles[i], STEP))
 
+        if self.current_angles[0] != self.target_angles[0]:
+            for i in range(STEP + 10):
+                self.current_angles[0] = diff[0][i]
+                self.setPWMwithAngle(self.current_angles, 0)
+                time.sleep(0.1)
         for i in range(STEP):
-            for j in range(3):
+            for j in range(1, 3):
                 self.current_angles[j] = diff[j][i]
                 self.setPWMwithAngle(self.current_angles, j)
                 time.sleep(.02)
