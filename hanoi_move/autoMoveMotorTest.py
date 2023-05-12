@@ -72,7 +72,7 @@ if __name__ == '__main__':
         [[11, 2.2, -3],[11.2, 2.2, 2.5],[13.1, -4.3, 2.3]], # modify y + 0.1 3rd
         [[11, -1, -3],[11.3, -1, 2.5],[13.5, -4.5, 2.2]] # modify y + 0.1 3rd
     ]
-    current_state = [[2], [1], [3,4]]
+    current_state = [[1, 2, 3, 4], [], []]
     h = HanoiTower(4)
     h.invade_state(current_state)
     flag = 0

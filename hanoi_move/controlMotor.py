@@ -47,15 +47,15 @@ class ControlMotor:
 
     def moveArmSlow(self):
         diff = []
-        diff.append(np.linspace(self.current_angles[0], self.target_angles[0], STEP + 10))
+        diff.append(np.linspace(self.current_angles[0], self.target_angles[0], abs(int(self.target_angles[0] - self.current_angles[0]))//2))
         for i in range(1, 3):
             diff.append(np.linspace(self.current_angles[i], self.target_angles[i], STEP))
 
-        if self.current_angles[0] != self.target_angles[0]:
-            for i in range(STEP + 10):
-                self.current_angles[0] = diff[0][i]
-                self.setPWMwithAngle(self.current_angles, 0)
-                time.sleep(0.1)
+        for i in range(abs(int(self.target_angles[0] - self.current_angles[0]))//2):
+            self.current_angles[0] = diff[0][i]
+            self.setPWMwithAngle(self.current_angles, 0)
+            time.sleep(0.1)
+
         for i in range(STEP):
             for j in range(1, 3):
                 self.current_angles[j] = diff[j][i]
