@@ -19,42 +19,43 @@ class ControlMotor:
         self.target_angles = [90, 110, 170]
 
     def setPWMwithAngle(self, thetas, num):
+        self.pwm.set_pwm(12, 0, AngleToRadian(90 - thetas[1] - 7 + thetas[2] - 21 + 7))
         if num == 0:
             self.pwm.set_pwm(0, 0, AngleToRadian(thetas[0]))
         elif num == 1:
             self.pwm.set_pwm(4, 0, AngleToRadian(thetas[1]))
         elif num == 2:
             self.pwm.set_pwm(8, 0, AngleToRadian(thetas[2]))
-        self.pwm.set_pwm(12, 0, AngleToRadian(90 - thetas[1] - 7 + thetas[2] - 21 + 7))
-
+        
+        
     def setDefault(self):
         diff = []
         for i in range(3):
             diff.append(np.linspace(self.current_angles[i], self.default_angles[i], STEP))
 
+        # for i in range(STEP):
+        #     self.current_angles[0] = diff[0][i]
+        #     self.setPWMwithAngle(self.current_angles, 0)
+        #     time.sleep(0.03)
+
         for i in range(STEP):
-            for j in range(1, 3):
+            for j in range(3):
                 self.current_angles[j] = diff[j][i]
                 self.setPWMwithAngle(self.current_angles, j)
                 time.sleep(.02)
-        time.sleep(0.2)
-        for i in range(STEP):
-            self.current_angles[0] = diff[0][i]
-            self.setPWMwithAngle(self.current_angles, 0)
-            time.sleep(.03)
+
         self.pwm.set_pwm(12, 0, AngleToRadian(45))
         self.pwm.set_pwm(15, 0, AngleToRadian(0))
 
     def moveArmSlow(self):
-        yStep = abs(int(self.target_angles[0] - self.current_angles[0])) // 2
-        diff = [np.linspace(self.current_angles[0], self.target_angles[0], yStep)]
-        for i in range(1, 3):
+        diff = []
+        for i in range(3):
             diff.append(np.linspace(self.current_angles[i], self.target_angles[i], STEP))
 
-        for i in range(yStep):
+        for i in range(STEP):
             self.current_angles[0] = diff[0][i]
             self.setPWMwithAngle(self.current_angles, 0)
-            time.sleep(0.1)
+            time.sleep(0.03)
 
         for i in range(STEP):
             for j in range(1, 3):

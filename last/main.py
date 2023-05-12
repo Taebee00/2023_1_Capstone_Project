@@ -79,14 +79,17 @@ if __name__ == '__main__':
         # 수정 필요
         total_cnt = len(sorted_labels[0] + sorted_labels[1] + sorted_labels[2])
 
-        if prev_state_labels == sorted_labels:
+        if sorted_labels == [[], [], [1, 2, 3, 4]]:
+            continue
+        elif prev_state_labels == sorted_labels:
             cnt += 1
         else:
             prev_state_labels = sorted_labels
             cnt = 0
 
         # 약 1.5(50frame)초간 확인된 상태가 유지되면 타겟 상태로 이동
-        if h.current_state_idx != -1 and cnt == 50 and total_cnt == 4:
+        if h.current_state_idx != -1 and cnt >= 50 and total_cnt == 4:
+            prev_state_labels = []
             print(f"a:{sorted_labels[0]}\nb:{sorted_labels[1]}\nc:{sorted_labels[2]}")
             print(h.current_state_idx)
 
