@@ -23,10 +23,14 @@ class ControlMotor:
             diff.append(np.linspace(self.current_angles[i], self.default_angles[i], STEP))
 
         for i in range(STEP):
-            for j in range(3):
+            for j in range(1, 3):
                 self.current_angles[j] = diff[j][i]
                 self.setPWMwithAngle(self.current_angles, j)
                 time.sleep(.02)
+        for i in range(STEP):
+            self.current_angles[0] = diff[0][i]
+            self.setPWMwithAngle(self.current_angles, 0)
+            time.sleep(.03)
         self.pwm.set_pwm(12, 0, AngleToRadian(45))
         self.pwm.set_pwm(15, 0, AngleToRadian(0))
 
@@ -49,7 +53,7 @@ class ControlMotor:
                 self.current_angles[j] = diff[j][i]
                 self.setPWMwithAngle(self.current_angles, j)
                 time.sleep(.02)
-    #"""
+
 
     def gripperMove(self, _ga):
         if _ga >= 120:
