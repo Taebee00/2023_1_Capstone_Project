@@ -43,5 +43,15 @@ def CalculateTheta(_x, _y, _z):
     else:
         th_1 = math.atan2(_z, sqrtXYZ(_x, _y)) + \
                math.asin(ARM2_LENGTH * math.sin(th_2) / sqrtXYZ(_x, _y, _z))
+        
+    th_0 *= (180 / math.pi)
+    if th_0 <= 90 :
+        th_0 += 90
+    else :
+        th_0 = 180 - th_0
 
-    return th_0 * (180 / math.pi), th_1 * (180 / math.pi), th_2 * (180 / math.pi)
+    th_1 *= (180 / math.pi)
+    
+    th_2 *= (180 / math.pi)
+
+    return th_0, th_1, th_2

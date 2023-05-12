@@ -97,10 +97,18 @@ while True:
     #     setDefaultMode()
 
     # Input x,y,z coordinates
+    print(pwm.read_pwm(0))
+    print(pwm.read_pwm(4))
+    print(pwm.read_pwm(8))
+    print(pwm.read_pwm(12))
     x, y, z = map(float, input('Enter the coordinates x,y,z :  ').split())
 
     # get theta with Inverse Kinematics
     theta_0, theta_1, theta_2 = CalcaulteTheta(x, y, z)
+    if theta_0 <= 90 :
+        theta_0 += 90
+    else :
+        theta_0 = 180 - theta_0
     theta_3 = 90 - theta_1 + theta_2 + 10
     pwm.set_pwm(12, 0, AngleToRadian(theta_3))
     # Move servos on each channel
@@ -113,11 +121,11 @@ while True:
 
     ans = input("Gripper haslsee? : ")
     if ans == 'Y' or ans =='y':
-        griper_angle = int(input('Enter the gripper angle (0 ~ 90) : ')) + 90
-        if (griper_angle >= 180):
-            griper_angle = 180
-        elif (griper_angle <= 90):
-            griper_angle = 90
+        ANGLETUNING = 20
+        griper_angle = int(input('Enter the gripper angle (0 ~ 90) : ')) + ANGLETUNING
+        if (griper_angle >= 90 + ANGLETUNING):
+            griper_angle = 90 + ANGLETUNING
+
         pwm.set_pwm(15, 0, AngleToRadian(griper_angle))
     
         print(f"gripper angle : {griper_angle}")

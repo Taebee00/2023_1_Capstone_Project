@@ -28,12 +28,13 @@ def AngleToRadian(angle):
 # red : 65 angle
 # yellow : 75 angle
 
+ANGLEBOJENG = 20
+
 while True:
-	griper_angle = int(input('Enter the gripper angle (0 ~ 90) : ')) + 90
-	if (griper_angle >= 180):
-		griper_angle = 180
-	elif (griper_angle <= 90):
-		griper_angle = 90
+	griper_angle = int(input('Enter the gripper angle (0 ~ 90) : ')) + ANGLEBOJENG
+	if griper_angle >= 90 + ANGLEBOJENG:
+		griper_angle = 90 + ANGLEBOJENG
+
 	pwm.set_pwm(15, 0, AngleToRadian(griper_angle))
 
 	print(f"gripper angle : {griper_angle}")

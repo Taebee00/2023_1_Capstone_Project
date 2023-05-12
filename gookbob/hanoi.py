@@ -15,7 +15,6 @@ class HanoiTower:
         # 탑 크기가 1일 경우
         if num_disks == 1:
             # 디스크 이동
-            print(from_peg, "->", to_peg)
             self.state[to_peg].insert(0, self.state[from_peg][0])
             self.state[from_peg].pop(0)
             # 상태 변화 기록
@@ -24,7 +23,6 @@ class HanoiTower:
             # 탑 크기가 1이 아닐 경우 재귀 호출을 통해 문제 해결
             self.solve_hanoi(num_disks - 1, from_peg, via_peg, to_peg)
             # 디스크 이동
-            print(from_peg, "->", to_peg)
             self.state[to_peg].insert(0, self.state[from_peg][0])
             self.state[from_peg].pop(0)
             # 상태 변화 기록
@@ -50,17 +48,3 @@ class HanoiTower:
             moves.append(state[3])
         return moves
 
-
-if __name__ == "__main__":
-    # 하노이 탑 객체 생성
-    h = HanoiTower(3)
-
-    # 모든 상태 변화 기록 출력
-    for x in range(len(h.state_history)):
-        print(h.state_history[x])
-
-    # 타겟 상태로 이동
-    h.invade_state([[], [1, 2], [3]])
-    # 현재 탑 상태 인덱스 출력
-    print(h.current_state_idx)
-    print(h.get_moves_to_target())

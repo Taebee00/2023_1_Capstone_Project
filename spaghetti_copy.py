@@ -1,8 +1,8 @@
 import jetson.inference
 import jetson.utils
 
-net = jetson.inference.detectNet(argv=["--model=../jetson-inference/python/training/detection/ssd/models/hanoi_04_20/ssd-mobilenet.onnx",
-                                 "--labels=../jetson-inference/python/training/detection/ssd/models/hanoi_04_20/labels.txt", "--input-blob=input_0", "--output-cvg=scores", "--output-bbox=boxes", "--threshold=0.2"])
+net = jetson.inference.detectNet(argv=["--model=../jetson-inference/python/training/detection/ssd/models/hanoi_05_04_3000/ssd-mobilenet.onnx",
+                                 "--labels=../jetson-inference/python/training/detection/ssd/models/hanoi_05_04_3000/labels.txt", "--input-blob=input_0", "--output-cvg=scores", "--output-bbox=boxes", "--threshold=0.2"])
 camera = jetson.utils.videoSource("/dev/video0")      # "/dev/video0" for V4L2
 display = jetson.utils.videoOutput("display://0")  # "my_video.mp4" for file
 

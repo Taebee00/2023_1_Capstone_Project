@@ -21,7 +21,7 @@ pwm.set_pwm_freq(60)
 
 while True:
 	a=input("Servo Motor Number1: ")
-	angle=input("Angle: ")
+	angle=int(input("Angle: "))
 	# Move servo on each channel
 	print('Moving servo on channel: ', int(a))
 	# pwm.set_pwm(int(a), 0, 150 + int(int(angle) * 2.8))
