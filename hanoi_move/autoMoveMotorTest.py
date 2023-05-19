@@ -3,44 +3,40 @@ from utils import *
 from hanoi import *
 
 
-GRIPPER_COLORS = {1: 110, 2: 100, 3: 90}
+def get_wonban_and_color(state, pole):
+    wonban_colors = {1: 110, 2: 100, 3: 90}
+    wonban = state[pole][0] if state[pole] else None
+    return wonban, wonban_colors.get(wonban)
 
 
-def get_pole_idx(letter):
-    return ord(letter) - ord('A')
+def process_hanoi_state(cm, state, prev_coordinates):
+    if state[3][1] in ['A', 'B', 'C']:
+        wonban, color = get_wonban_and_color(
+            state, ord(state[3][1]) - ord('A'))
+        if wonban:
+            cm.gripperMove(color)
+            time.sleep(1)
+            for j in range(3):
+                theta_0, theta_1, theta_2 = CalculateTheta(
+                    prev_coordinates[j][0], prev_coordinates[j][1], prev_coordinates[j][2])
+                cm.target_angles = [theta_0, theta_1, theta_2]
+                cm.moveArmSlow()
+                time.sleep(1.5)
 
-
-def get_wonban(state, pole_letter):
-    return state[get_pole_idx(pole_letter)][0] if state[get_pole_idx(pole_letter)] else None
-
-
-def calculate_and_move(cm, coord, is_grip, gripper_angle):
-    theta_0, theta_1, theta_2 = CalculateTheta(*coord)
-    print(*coord)
-    cm.target_angles = [theta_0, theta_1, theta_2]
-    print(theta_0, theta_1, theta_2)
-    cm.moveArmSlow()
-    if is_grip:
-        cm.gripperMove(gripper_angle)
-        time.sleep(1)
-
-
-def execute_movement(cm, coordinates, gripper_angle):
-    for coord in coordinates:
-        calculate_and_move(cm, coord, coord[1] == 1, gripper_angle)
-    cm.gripperMove(0)
-    time.sleep(1)
-    cm.setDefault()
-    time.sleep(1)
+            theta_0, theta_1, theta_2 = CalculateTheta(
+                prev_coordinates[2][0], prev_coordinates[2][1], 1)
+            cm.target_angles = [theta_0, theta_1, theta_2]
+            cm.moveArmSlow()
+            time.sleep(1.5)
+            cm.gripperMove(0)
+            time.sleep(1.5)
+            cm.setDefault()
+            time.sleep(1.5)
 
 
 if __name__ == '__main__':
     cm = ControlMotor()
     cm.setDefault()
-    Yellow = 110
-    Red = 100
-    Green = 90
-
     # while True:
     coordinates = [
         [[11, 2.2, -1.8], [11.2, 2.2, 2.5], [13.4, -4.5, 2.1]],
@@ -51,15 +47,16 @@ if __name__ == '__main__':
         [[11, -1, -3], [11.3, -1, 2.5], [13.5, -4.7, 2.2]],
         [[11, 2.1, -3], [11.3, 2.2, 2.4], [13.2, -4.4, 2.2]],
     ]
+    # while True:
     current_state = [[1, 2, 3], [], []]
     h = HanoiTower(3)
     h.invade_state(current_state)
 
-    for i, state in enumerate(h.state_history):
-        print(f"--> {state}" if i == h.current_state_idx else state)
-        if i != h.current_state_idx:
-            gripper_angle = GRIPPER_COLORS.get(get_wonban(state, state[3][1]))
-            if gripper_angle is not None:
-                execute_movement(cm, coordinates[i - 1], gripper_angle)
+    for i in range(len(h.state_history)):
+        if i == h.current_state_idx:
+            print(f"--> {h.state_history[i]}")
+        else:
+            print(h.state_history[i])
+            process_hanoi_state(cm, h.state_history[i], coordinates[i - 1])
 
     print(h.current_state_idx)
