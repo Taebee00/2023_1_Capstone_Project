@@ -1,7 +1,5 @@
 class HanoiTower:
     def __init__(self, n):
-        # 원반 크기
-        self.disk_colors = {1: 110, 2: 100, 3: 90, 4: 80}
         # 초기 상태 설정
         self.state = {"A": list(range(1, n + 1)), "B": [], "C": []}
         # 상태 변화 기록
@@ -42,4 +40,3 @@ class HanoiTower:
             if state[:3] == target_state:
                 self.current_state_idx = idx
                 break
-
