@@ -12,6 +12,8 @@ class ControlMotor:
         self.pwm = PCA9685(address=0x40, busnum=1)
         # Set frequency to 60[Hz]
         self.pwm.set_pwm_freq(60)
+        # disk size
+        self.disk_colors = {1: 110, 2: 100, 3: 90, 4: 80}
         self.default_angles = [90, 180, 190, 45]
         self.current_angles = [90, 180, 190]
         self.target_angles = [90, 110, 170]
@@ -66,10 +68,10 @@ class ControlMotor:
 
         self.pwm.set_pwm(15, 0, AngleToRadian(_ga))
 
-    def moveArmWithCoord(self, _color, _coord):
+    def moveArmWithCoord(self, _disk, _coord):
         for j in range(3):
             if j == 1:
-                self.gripperMove(_color)
+                self.gripperMove(self.disk_colors.get(_disk))
                 time.sleep(0.5)
             theta_0, theta_1, theta_2 = CalculateTheta(_coord[j][0], _coord[j][1], _coord[j][2])
             self.target_angles = [theta_0, theta_1, theta_2]
