@@ -95,6 +95,5 @@ if __name__ == '__main__':
             processState = h.state_history[h.current_state_idx + 1]
             pole = ord(processState[3][1]) - ord('A')
             disk = processState[pole][0] if processState[pole] else None
-            color = h.disk_colors.get(disk)
             if disk:
-                cm.moveArmWithCoord(color, coordinates[h.current_state_idx])
+                cm.moveArmWithCoord(disk, coordinates[h.current_state_idx])
