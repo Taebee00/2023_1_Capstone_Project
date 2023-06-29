@@ -36,7 +36,24 @@
 |5번 관절|4번 관절에 붙어 하노이탑 원반을 잡거나 놓을 수 있도록 회전하는 관절(그리퍼 제어)|
 
 ### Inverse Kinematics
-로봇팔의 경우, 원하는 위치로 이동시키기 위해서는 각 관절의 각도를 알고 좌표를 계산하는 것(정기구학)이 아닌, 좌표가 주어졌을 때, 그에 맞는 각 관절의 각도를 계산하는 Inverse Kinematics(역기구학)이 필요함 
+로봇팔의 경우, 원하는 위치로 이동시키기 위해서는 각 관절의 각도를 알고 좌표를 계산하는 것(정기구학)이 아닌, 좌표가 주어졌을 때, 그에 맞는 각 관절의 각도를 계산하는**Inverse Kinematics(역기구학)**이 필요함 
 > **Inverse Kinematics(역기구학)이란?**
 역기구학이란 정기구학의 반대로, 관절을 가진 로봇을 원하는 좌표에 위치시키기 위해 관절의 각도를 조절하기 위한 학문을 말한다. 순기구학의 반대로, 순기구학은 관절의 각도에 따른 위치를 계산하는 것이고, 역기구학은 위치에 따른 관절의 각도를 계산하는 것이다.
 
+- 1,2,3번 이렇게 3개의 관절을 통해 3차원 3관절 Inverse Kinematics를 계산하고, 계산한 값을 통해 4번 관절로 그리퍼의 수평을 맞춘다. 
+- 2차원 2관절 Inverse Kinematics를 먼저 계산한 뒤, 그 결과를 활용하여 3차원 3관절 Inverse Kinematics를 계산하였다.
+
+|2차원 2관절 Inverse Kinematics|3차원 3관절 Inverse Kinematics|
+|---|---|
+|![image](https://github.com/Taebee00/2023_1_Capstone_Project/assets/104549849/bf079a34-b618-48d7-af05-6d289893605b)|![image](https://github.com/Taebee00/2023_1_Capstone_Project/assets/104549849/7718afc1-2bd6-47d6-b79d-c4da703abd61)|
+|**1. $\theta_2$ 구하기**<br>  - $cos$ 법칙 사용: $c^2=a^2+b^2-2ab{cos}C$<br>  - $(x^2+y^2)={l_1}^2+{l_2}^2-2l_1l_2cos(180-\theta_2)$<br>  - $cos(180-\theta_2)=-cos(\theta_2)$<br>  - $cos(\theta_2)=\frac{x^2+y^2-{l_1}^2-{l_2}^2}{2l_1l_2}$<br>  - $\theta_2=arccos(\frac{x^2+y^2-{l_1}^2-{l_2}^2}{2l_1l_2})$<br><br>**2. $\theta_1$ 구하기**<br>  - $sin$ 법칙 사용: $\frac{sinB}{b}=\frac{sin C}{c}$<br> - $\frac{sin\bar{\theta_1}}{l_2}=\frac{sin(180-\theta_2)}{\sqrt{x^2+y^2}}=\frac{sin(\theta_2)}{\sqrt{x^2+y^2}}$<br>  - $\bar{\theta_1}=arcsin(\frac{l_2sin(\theta_2)}{\sqrt{x^2+y^2}})$<br>  - $\theta_1=\bar{\theta_1}+\alpha$<br>  - $\alpha=arctan(\frac{y}{x})$<br>  - $\theta_1=arcsin(\frac{l_2sin(\theta_2)}{\sqrt{x^2+y^2}})+arctan(\frac{y}{x})$|**1. $\theta_0$ 구하기**<br>  - $tan(\theta_0)=\frac{y}{x}$<br>  - $\theta_0=arctan(\frac{y}{x})$<br><br>**2. $\theta_1,\theta_2$ 구하기**<br>2차원 좌표 $(\sqrt{x^2+y^2},z)$ 를 기준으로 2차원 2관절 Inverse Kinematics 진행<br>  - $\theta_2=arccos(\frac{x^2+y^2+z^2-l_1^2-l_2^2}{2l_1l_2})$<br>  - $\theta_1=arcsin(\frac{l_2*sin\theta_2}{x^2+y^2+z^2})+arctan(\frac{z}{\sqrt{x^2+y^2}})$|
+
+#### 3차원 3관절 Inverse Kinematic
+
+- $\theta_0$ 구하기
+    - $tan(\theta_0)=\frac{y}{x}$
+    - $\theta_0=arctan(\frac{y}{x})$
+- $\theta_1,\theta_2$ 구하기
+    - 2차원 좌표 $(\sqrt{x^2+y^2},z)$ 를 기준으로 2차원 2관절 Inverse Kinematics 진행
+        - $\theta_2=arccos(\frac{x^2+y^2+z^2-l_1^2-l_2^2}{2l_1l_2})$
+        - $\theta_1=arcsin(\frac{l_2*sin\theta_2}{x^2+y^2+z^2})+arctan(\frac{z}{\sqrt{x^2+y^2}})$
