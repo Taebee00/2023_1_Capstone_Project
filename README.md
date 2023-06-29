@@ -53,4 +53,23 @@
 |![image](https://github.com/Taebee00/2023_1_Capstone_Project/assets/104549849/bf079a34-b618-48d7-af05-6d289893605b)|![image](https://github.com/Taebee00/2023_1_Capstone_Project/assets/104549849/7718afc1-2bd6-47d6-b79d-c4da703abd61)|
 |**1. $\theta_2$ 구하기**<br>  - $cos$ 법칙 사용: $c^2=a^2+b^2-2ab{cos}C$<br>  - $(x^2+y^2)={l_1}^2+{l_2}^2-2l_1l_2cos(180-\theta_2)$<br>  - $cos(180-\theta_2)=-cos(\theta_2)$<br>  - $cos(\theta_2)=\frac{x^2+y^2-{l_1}^2-{l_2}^2}{2l_1l_2}$<br>  - $\theta_2=arccos(\frac{x^2+y^2-{l_1}^2-{l_2}^2}{2l_1l_2})$<br><br>**2. $\theta_1$ 구하기**<br>  - $sin$ 법칙 사용: $\frac{sinB}{b}=\frac{sin C}{c}$<br> - $\frac{sin\bar{\theta_1}}{l_2}=\frac{sin(180-\theta_2)}{\sqrt{x^2+y^2}}=\frac{sin(\theta_2)}{\sqrt{x^2+y^2}}$<br>  - $\bar{\theta_1}=arcsin(\frac{l_2sin(\theta_2)}{\sqrt{x^2+y^2}})$<br>  - $\theta_1=\bar{\theta_1}+\alpha$<br>  - $\alpha=arctan(\frac{y}{x})$<br>  - $\theta_1=arcsin(\frac{l_2sin(\theta_2)}{\sqrt{x^2+y^2}})+arctan(\frac{y}{x})$|**1. $\theta_0$ 구하기**<br>  - $tan(\theta_0)=\frac{y}{x}$<br>  - $\theta_0=arctan(\frac{y}{x})$<br><br>**2. $\theta_1,\theta_2$ 구하기**<br>2차원 좌표 $(\sqrt{x^2+y^2},z)$ 를 기준으로 2차원 2관절 Inverse Kinematics 진행<br>  - $\theta_2=arccos(\frac{x^2+y^2+z^2-l_1^2-l_2^2}{2l_1l_2})$<br>  - $\theta_1=arcsin(\frac{l_2*sin\theta_2}{x^2+y^2+z^2})+arctan(\frac{z}{\sqrt{x^2+y^2}})$|
 
+## 하노이탑 이미지 학습
+로봇팔이 하노이탑의 상태를 판단할 수 있어야 하기 때문에 하노이탑 각각의 원반 이미지를 학습시키고자 함
+- Jetson Nano를 지원하는 `jetson-inference` 라이브러리의 `camera-capture`라는 툴을 사용하여 직접 각각의 dataset 레이블링
+- 약 1200장의 dataset 확보 후, 6:2:2의 비율로 train, valdation, test 진행
+> 참고 링크: https://github.com/dusty-nv/jetson-inference/blob/master/docs/pytorch-collect-detection.md
+
+![image](https://github.com/Taebee00/2023_1_Capstone_Project/assets/104549849/8d58fd02-4c8e-4edb-b661-10599e29e310)
+
+## 하노이탑 알고리즘
+|![image](https://github.com/Taebee00/2023_1_Capstone_Project/assets/104549849/3577c338-1166-457d-a67c-8f5bf10e799e)|1. 학습된 모델을 통해 모든 원반을 인식한 후, 각각의 원반의 위치 정보를 가져와서 하노이탑의 현재 상황 파악(원반 4개 기준 1~15단계)<br><br>2. 현재 상황을 판단한 후, 재귀함수를 통해 하노이탑 알고리즘 수행|
+|---|--|
+
+<img src="https://github.com/Taebee00/2023_1_Capstone_Project/assets/104549849/52155c37-943d-45c5-a5dd-b151cc7aca94" width="50%" height="50%"/>
+
+- 학습된 모델을 통해 모든 원반을 인식한 후, 각각의 원반의 위치 정보를 가져와서 하노이탑의 현재 상황 파악(원반 4개 기준 1~15단계)
+- 현재 상황을 판단한 후, 재귀함수를 통해 하노이탑 알고리즘 수행
+  
+
+
 
